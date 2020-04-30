@@ -1,0 +1,12 @@
+{
+    "ecr_repo_name": "django-helloworld",
+    "ecr_repo_uri": "614083026494.dkr.ecr.ap-south-1.amazonaws.com/django-helloworld",
+    "artifact_bucket_name": "ankit-git-boto",
+    "ses_from_email": "ankit.thakur@axcess.io",
+    "ses_to_email": "ankit.thakur@juspay.in",
+    "image_name": "django-helloworld-image",
+    "aws_account_id": "614083026494",
+    "aws_region":"ap-south-1",
+    "image_tag": "<aws_account_id>.dkr.ecr.<aws_region>.amazonaws.com/<image_name>",
+    "repo_name": "jenkins-final-demo"
+}
