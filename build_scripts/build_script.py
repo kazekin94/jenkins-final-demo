@@ -5,7 +5,8 @@ import docker
 
 #fetch parameters from ssm
 def fetch_parameter():
-    response = client.get_parameter(
+    ssm_client=boto.client('ssm')
+    response = ssm_client.get_parameter(
         Name='django-helloworld'
     )
     print(response)
