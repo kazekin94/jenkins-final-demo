@@ -23,7 +23,7 @@ def build_image(client, para, path_workspace):
     actual_path=path_workspace.replace('<repo_name>', para['repo_name'])
     docker_file=actual_path+"/Dockerfile"
     print("Path to workspace:", docker_file)
-    image_build_response=client.images.build(path=docker_file)
+    image_build_response=client.images.build(path=actual_path)
     print(image_build_response)
     
 
