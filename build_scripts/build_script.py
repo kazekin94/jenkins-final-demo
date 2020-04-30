@@ -1,4 +1,4 @@
 import boto3
 import json
 
- print("Hello world")
+print("Hello world")
