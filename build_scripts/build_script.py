@@ -1,6 +1,7 @@
 import boto3
 import json
 import docker
+import os
 from io import BytesIO
 
 
@@ -20,10 +21,11 @@ def fetch_parameter(para):
 #build image
 def build_image(client, para, path_workspace):
     print("Fetched para:", para)
-    actual_path=path_workspace.replace('<repo_name>', para['repo_name'])
-    docker_file=actual_path+"/Dockerfile"
+    actual_path=path_workspace.replace('<repo_name>', para['repo_name']) #path to docker file
+    print("Workspace path:", actual_path)
+    docker_file=actual_path+"/Dockerfile" #path of dockerfile
     print("Path to workspace:", docker_file)
-    image_build_response=client.images.build(path=actual_path)
+    image_build_response=client.images.build(path=docker_file, tag=para['image_name'], dockerfile='Dockerfile')
     print(image_build_response)
     
 
