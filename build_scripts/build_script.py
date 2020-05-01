@@ -39,12 +39,15 @@ def build_image(client, para, path_workspace):
 
 
 #tag image
-def tag_image(client, image_name):
+def tag_image(client, image_name, para):
     try:
-        image_tag_response=client.images.get(image_name)     
-        print(image_tag_response)
+        image_tag_template=para['image_tag']
+        image_tag=image_tag_template.relace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region']).replace('<image_name>', image_name)
+        print("Tag to be given to image:", image_tag)
+        image_tag_response=client.images.tag(tag=image_tag)     
+        print("Tagging done?", image_tag_response)
     except Exception as e:
-        print(e)       
+        print("Exception in tagging:", e)       
 
 
 if __name__ == "__main__":
@@ -56,4 +59,4 @@ if __name__ == "__main__":
     #calls 
     fetch_para_response=fetch_parameter(para_name) #fetch para
     image_id, image_tag=build_image(docker_client, fetch_para_response, work_space_path) #build image
-    call_tag_image=tag_image(docker_client, image_tag[0])
+    call_tag_image=tag_image(docker_client, image_tag[0], fetch_para_response)
