@@ -65,4 +65,5 @@ if __name__ == "__main__":
     #calls 
     fetch_para_response=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetch_para_response, work_space_path) #build image
+    print(image_object)
     #call_tag_image=tag_image(docker_client, image_tag[0], fetch_para_response, image_id)
