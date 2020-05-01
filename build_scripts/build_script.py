@@ -39,14 +39,14 @@ def build_image(client, para, path_workspace):
 
 
 #tag image
-def tag_image(client, image_name, para):
+def tag_image(client, image_name, para, image_id):
     try:
         image_tag_template=para['image_tag']
         image_tag=image_tag_template.replace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region']).replace('<image_name>', image_name)
         print("Old image name:", image_name)
         print("Tag to be given to image:", image_tag)
         low_level_client=docker.APIClient(base_url='unix://var/run/docker.sock') #set low level client
-        low_level_client.tag(image_name, image_tag.split(':')[0], image_tag, force=True)
+        low_level_client.tag(image_id, image_tag.split(':')[0], image_tag, force=True)
         '''
         image_tag_response=client.tag(image_name,  tag=image_tag)     
         print("Tagging done?", image_tag_response)
@@ -64,4 +64,4 @@ if __name__ == "__main__":
     #calls 
     fetch_para_response=fetch_parameter(para_name) #fetch para
     image_id, image_tag=build_image(docker_client, fetch_para_response, work_space_path) #build image
-    call_tag_image=tag_image(docker_client, image_tag[0], fetch_para_response)
+    call_tag_image=tag_image(docker_client, image_tag[0], fetch_para_response, image_id)
