@@ -22,10 +22,10 @@ def fetch_parameter(para):
 def build_image(client, para, path_workspace):
     print("Fetched para:", para)
     actual_path=path_workspace.replace('<repo_name>', para['repo_name']) #path to docker file
-    print("Workspace path:", actual_path)
     docker_file=actual_path+"/Dockerfile" #path of dockerfile
-    print("Path to workspace:", docker_file)
-    image_build_response=client.images.build(path=docker_file, tag=para['image_name'], dockerfile='Dockerfile')
+    docker_file_path=os.path.dirname(docker_file) # os path
+    print("Path to workspace:", docker_file_path)
+    image_build_response=client.images.build(path=docker_file_path, tag=para['image_name'], dockerfile='Dockerfile')
     print(image_build_response)
     
 

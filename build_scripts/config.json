@@ -8,5 +8,6 @@
     "aws_account_id": "614083026494",
     "aws_region":"ap-south-1",
     "image_tag": "<aws_account_id>.dkr.ecr.<aws_region>.amazonaws.com/<image_name>",
-    "repo_name": "jenkins-final-demo"
+    "repo_name": "jenkins-final-demo",
+    "pipeline_name": "python-pipeline"
 }
