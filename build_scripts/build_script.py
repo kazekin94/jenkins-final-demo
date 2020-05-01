@@ -41,11 +41,6 @@ def build_image(client, para, path_workspace):
         print("Exception in building image:", e)
 
 
-#push image to ecr
-def push_image(client, para, image_obj):
-    print(image_obj[0].tags)
-
-
 if __name__ == "__main__":
     #env variables
     para_name='django-helloworld'
@@ -55,4 +50,3 @@ if __name__ == "__main__":
     #calls 
     fetch_para_response=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetch_para_response, work_space_path) #build image
-    call_push_image=push_image(docker_client, fetch_para_response, image_object)
