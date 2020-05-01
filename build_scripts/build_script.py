@@ -55,7 +55,7 @@ def push_image(client, image_obj):
         login_resp=client.login(user, passwd, registry=registry) #login to repo
         print('Login succeded:', login_resp)
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
-        push_resp=client.image.push(image_name, auth_config=auth_config) #push image
+        push_resp=client.images.push(image_name, auth_config=auth_config) #push image
         print('Push response:', push_resp)
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
