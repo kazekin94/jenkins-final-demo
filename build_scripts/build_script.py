@@ -44,7 +44,7 @@ def build_image(client, para, path_workspace):
 
 #push image to ecr
 def push_image(image_obj):
-    ecr_client=boto3.client('ecr')
+    ecr_client=boto3.client('ecr', region_name='ap-south-1')
     print("Image object:", image_obj[0].tags)
     #ecr authorization
     auth_resp=ecr_client.get_authorization_token()
