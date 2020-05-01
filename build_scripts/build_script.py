@@ -3,6 +3,7 @@ import json
 import docker
 import os
 from io import BytesIO
+import base64
 
 
 #fetch parameters from ssm
@@ -46,9 +47,13 @@ def build_image(client, para, path_workspace):
 def push_image(image_obj):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
     print("Image object:", image_obj[0].tags)
-    #ecr authorization
-    auth_resp=ecr_client.get_authorization_token()
-    print(auth_resp)
+    try:
+        #ecr authorization
+        auth_resp=ecr_client.get_authorization_token()
+        decoded_auth=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken'])
+        print(decoded_auth)
+    except Exception as e:
+        print("Exception raised in pushing image to ecr:", e)
 
     
 
