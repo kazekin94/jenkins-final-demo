@@ -27,10 +27,9 @@ def build_image(client, para, path_workspace):
     print("Path to dockerfile:", docker_file)
     docker_file_path=os.path.dirname(docker_file) # os path
     print("Path to workspace:", docker_file_path)
-    image_build_response=client.images.build(path=docker_file_path, tag=para['image_name'], dockerfile='Dockerfile')
-    print(image_build_response[0])
-    print(type(image_build_response[0]))
+    image_build_response=client.images.build(path=docker_file_path, tag=para['image_name'], dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
     print(image_build_response[0].id)
+    print(image_build_response[0].tags)
 
 
 if __name__ == "__main__":
