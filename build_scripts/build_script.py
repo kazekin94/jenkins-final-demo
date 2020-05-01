@@ -32,15 +32,25 @@ def build_image(client, para, path_workspace):
     image_name=repo_name+':'+para['image_tag']
     print(image_name)
     #build image
-    print("Start building image.")
+    print("Image build started")
     try:
         image_build_response=client.images.build(path=docker_file_path, tag=image_name, dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
-        print("Image built:", image_build_response)
-        print("Image tags:", image_build_response[0].tags)
+        #print("Successful image built return object:", image_build_response)
+        print("Image built")
         return image_build_response
     except Exception as e:
-        print("Exception in building image:", e)
+        print('Exception in building image:', e)
 
+
+#push image to ecr
+def push_image(image_obj):
+    ecr_client=boto3.client('ecr')
+    print("Image object:", image_obj[0].tags)
+    #ecr authorization
+    auth_resp=ecr_client.get_authorization_token()
+    print(auth_resp)
+
+    
 
 if __name__ == "__main__":
     #env variables
@@ -49,5 +59,6 @@ if __name__ == "__main__":
     #set docker client
     docker_client=docker.from_env()
     #calls 
-    fetch_para_response=fetch_parameter(para_name) #fetch para
-    image_object=build_image(docker_client, fetch_para_response, work_space_path) #build image
+    fetched_paras=fetch_parameter(para_name) #fetch para
+    image_object=build_image(docker_client, fetched_paras, work_space_path) #build image
+    ecr_push_image=push_image(image_object) 
