@@ -36,6 +36,7 @@ def build_image(client, para, path_workspace):
     try:
         image_build_response=client.images.build(path=docker_file_path, tag=image_name, dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
         print("Image built:", image_build_response)
+        print("Image tags:", image_build_response[0].tags)
         return image_build_response
     except Exception as e:
         print("Exception in building image:", e)
