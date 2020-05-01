@@ -29,7 +29,7 @@ def build_image(client, para, path_workspace):
     #build repo name
     repo_name_template=para['image_repo_name']
     repo_name=repo_name_template.replace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region'])+'/'+para['image_name']
-    image_name=para['image_tag']
+    image_name=repo_name+':'+para['image_tag']
     print(image_name)
     #build image
     print("Start building image.")
