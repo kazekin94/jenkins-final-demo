@@ -22,14 +22,18 @@ def fetch_parameter(para):
 def build_image(client, para, path_workspace):
     print("Fetched para:", para)
     actual_path=path_workspace.replace('<pipeline_name>', para['pipeline_name']) #path to docker file
-    print("Path string:", actual_path)
+    print("Created path to workspace:", actual_path)
     docker_file=actual_path+"/Dockerfile" #path of dockerfile
     print("Path to dockerfile:", docker_file)
     docker_file_path=os.path.dirname(docker_file) # os path
-    print("Path to workspace:", docker_file_path)
+    print("Path to docker build context:", docker_file_path)
+    print("Start building image.")
     image_build_response=client.images.build(path=docker_file_path, tag=para['image_name'], dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
-    print(image_build_response[0].id)
-    print(image_build_response[0].tags)
+    image_id=image_build_response[0].id
+    image_tags=image_build_response[0].tags
+    print("Image id:", image_id, "Image tags:", image_tags)
+    
+    return image_id, image_tags
 
 
 if __name__ == "__main__":
