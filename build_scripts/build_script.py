@@ -29,6 +29,7 @@ def build_image(client, para, path_workspace):
     print("Path to workspace:", docker_file_path)
     image_build_response=client.images.build(path=docker_file_path, tag=para['image_name'], dockerfile='Dockerfile')
     print(image_build_response)
+    print(type(image_build_response))
     
 
 if __name__ == "__main__":
