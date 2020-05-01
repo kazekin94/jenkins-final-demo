@@ -4,7 +4,7 @@
     "artifact_bucket_name": "ankit-git-boto",
     "ses_from_email": "ankit.thakur@axcess.io",
     "ses_to_email": "ankit.thakur@juspay.in",
-    "image_name": "django-helloworld-image",
+    "image_name": "django-helloworld:latest",
     "aws_account_id": "614083026494",
     "aws_region":"ap-south-1",
     "image_tag": "<aws_account_id>.dkr.ecr.<aws_region>.amazonaws.com/<image_name>",
