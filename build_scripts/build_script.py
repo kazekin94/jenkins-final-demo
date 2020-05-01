@@ -50,8 +50,9 @@ def push_image(image_obj):
     try:
         #ecr authorization
         auth_resp=ecr_client.get_authorization_token()
-        decoded_auth=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode()
-        print(decoded_auth)
+        user, passwd=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode().split(':')
+        print(user, passwd)
+        print(type(user), type(passwd))
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
 
