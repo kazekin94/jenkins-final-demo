@@ -21,7 +21,8 @@ def fetch_parameter(para):
 #build image
 def build_image(client, para, path_workspace):
     print("Fetched para:", para)
-    actual_path=path_workspace.replace('<repo_name>', para['repo_name']) #path to docker file
+    actual_path=path_workspace.replace('<pipeline_name>', para['pipeline_name']) #path to docker file
+    print(actual_path)
     docker_file=actual_path+"/Dockerfile" #path of dockerfile
     docker_file_path=os.path.dirname(docker_file) # os path
     print("Path to workspace:", docker_file_path)
@@ -32,7 +33,7 @@ def build_image(client, para, path_workspace):
 if __name__ == "__main__":
     #env variables
     para_name='django-helloworld'
-    work_space_path='/home/ec2-user/workspace/<repo_name>'
+    work_space_path='/home/ec2-user/workspace/<pipeline_name>'
     #set docker client
     docker_client=docker.from_env()
     #calls 
