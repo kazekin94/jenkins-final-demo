@@ -42,7 +42,7 @@ def build_image(client, para, path_workspace):
 def tag_image(client, image_name, para):
     try:
         image_tag_template=para['image_tag']
-        image_tag=image_tag_template.relace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region']).replace('<image_name>', image_name)
+        image_tag=image_tag_template.replace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region']).replace('<image_name>', image_name)
         print("Tag to be given to image:", image_tag)
         image_tag_response=client.images.tag(tag=image_tag)     
         print("Tagging done?", image_tag_response)
