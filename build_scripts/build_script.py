@@ -39,7 +39,7 @@ def build_image(client, para, path_workspace):
 
 
 #tag image
-def tag_image(image_name):
+def tag_image(client, image_name):
     try:
         image_tag_response=client.images.get(image_name)     
         print(image_tag_response)
