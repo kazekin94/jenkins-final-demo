@@ -46,14 +46,17 @@ def build_image(client, para, path_workspace):
 #push image to ecr
 def push_image(client, image_obj):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
-    print("Image object:", image_obj[0].tags)
+    image_name=image_obj[0].tags[0]
     try:
         #ecr authorization
         auth_resp=ecr_client.get_authorization_token()
         user, passwd=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode().split(':')
         registry=auth_resp['authorizationData'][0]['proxyEndpoint']
-        login_resp=client.login(user, passwd, registry=registry)
-        print(login_resp)
+        login_resp=client.login(user, passwd, registry=registry) #login to repo
+        print('Login succeded:', login_resp)
+        auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
+        push_resp=client.image.push(image_name, auth_config=auth_config) #push image
+        print('Push response:', push_resp)
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
 
