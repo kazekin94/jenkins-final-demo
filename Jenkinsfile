@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'chmod 777 ${WORKSPACE}/build_scripts/build_script.py'
-				sh "python3 ${WORKSPACE}/build_scripts/build_script.py"
+				sh "sudo python3 ${WORKSPACE}/build_scripts/build_script.py"
             }
         }
     }
