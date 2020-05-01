@@ -44,6 +44,7 @@ def tag_image(client, image_name, para):
         image_tag_template=para['image_tag']
         image_tag=image_tag_template.replace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region']).replace('<image_name>', image_name)
         print("Tag to be given to image:", image_tag)
+        print("Old image name:", image_name)
         '''
         image_tag_response=client.tag(image_name,  tag=image_tag)     
         print("Tagging done?", image_tag_response)
