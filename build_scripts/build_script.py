@@ -44,20 +44,20 @@ def build_image(client, para, path_workspace):
 
 
 #push image to ecr
-def push_image(image_obj):
+def push_image(client, image_obj):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
     print("Image object:", image_obj[0].tags)
     try:
         #ecr authorization
         auth_resp=ecr_client.get_authorization_token()
         user, passwd=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode().split(':')
-        print(user, passwd)
-        print(type(user), type(passwd))
+        registry=auth_resp['authorizationData'][0]['proxyEndpoint']
+        login_resp=client.login(user, passwd, registry=registry)
+        print(login_resp)
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
 
     
-
 if __name__ == "__main__":
     #env variables
     para_name='django-helloworld'
@@ -67,4 +67,4 @@ if __name__ == "__main__":
     #calls 
     fetched_paras=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetched_paras, work_space_path) #build image
-    ecr_push_image=push_image(image_object) 
+    ecr_push_image=push_image(docker_client, image_object) 
