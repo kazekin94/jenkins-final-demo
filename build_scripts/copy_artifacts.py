@@ -43,8 +43,8 @@ def put_s3(para, workspace_template):
         zip_file=zipfile.ZipFile(zip_filename, 'w')
         with zip_file:
             for file in filepaths:
-                print(file)
-                zip_file.write(file)
+                print(file.split('/home/ec2-user/workspace/python-pipeline/')[1])
+                zip_file.write(file, file.split('/home/ec2-user/workspace/python-pipeline/')[1], compress_type=zipfile.ZIP_DEFLATED)
     else:
         print('Not there')
 
