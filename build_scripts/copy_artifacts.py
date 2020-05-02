@@ -1,7 +1,9 @@
 import boto3
 import json
 import os
+import string
 import zipfile
+import random
 
 
 #fetch para from para store
@@ -22,8 +24,16 @@ def fetch_parameter(para):
 #zip files to make an archive
 def put_s3(para, workspace_template):
     workspace_path=workspace_template.replace('<pipeline_name>', para['pipeline_name'])
+    letter_choice=string.ascii_lowercase+string.ascii_uppercase #set random letters
+    random_word=''.join(random.choice(letter_choice) for i in range (10)) #generate 10 letter random letter
+    zip_filename=random_word+'-artifact.zip'
+    print("Zip filename", zip_filename)
     if os.path.exists(workspace_path):
-        print("There")
+        print("Workspace exists in slave instance")
+        zipfile_obj=zipfile.ZipFile(zip_filename, 'w')
+        zipfile_obj.write(workspace_path+'/build_scripts', 'build_scripts', compress_type=zipfile.ZIP_DEFLATED)
+        zipfile_obj.write(workspace_path+'/appspec.yml', 'appspec.yml', compress_type=zipfile.ZIP_DEFLATED)
+        zipfile_obj.close()
     else:
         print("Not there")
 

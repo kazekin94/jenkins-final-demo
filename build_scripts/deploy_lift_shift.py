@@ -59,6 +59,7 @@ def push_image(client, image_obj):
         print('Push response:', push_resp)
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
+        
 
     
 if __name__ == "__main__":
