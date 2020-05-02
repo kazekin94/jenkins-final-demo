@@ -23,6 +23,7 @@ def fetch_parameter(para):
 #zip files to make an archive
 def put_s3(para, workspace_template):
     workspace_path=workspace_template.replace('<pipeline_name>', para['pipeline_name']) #workspace path
+    print(workspace_path)
     letter_choice=string.ascii_lowercase+string.ascii_uppercase #set random letters
     random_word=''.join(random.choice(letter_choice) for i in range (10)) #generate 10 letter random letter
     zip_filename=random_word+'-artifact.zip'
@@ -35,7 +36,7 @@ def put_s3(para, workspace_template):
             for filename in files:
                 filepath = os.path.join(root, filename)
                 filepaths.append(filepath)
-        filepaths=filepaths.append(workspace_path+'/appspec.yml')
+        #filepaths=filepaths.append(workspace_path+'/appspec.yml')
         print('Filepaths in buildscripts directory:', filepaths)
         
     else:
