@@ -22,7 +22,10 @@ def fetch_parameter(para):
 #zip files to make an archive
 def put_s3(para, workspace_template):
     workspace_path=workspace_template.replace('<pipeline_name>', para['pipeline_name'])
-    print(workspace_path)
+    if os.path.exists(workspace_path):
+        print("There")
+    else:
+        print("Not there")
 
  
 #main function
