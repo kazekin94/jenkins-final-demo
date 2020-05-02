@@ -11,7 +11,6 @@ def fetch_parameter(para):
     #set ssm client
     print("Fetching paras from parameter store.")
     ssm_client=boto3.client('ssm', region_name='ap-south-1')
-
     response = ssm_client.get_parameter(
         Name=para
     )
@@ -56,20 +55,34 @@ def put_s3(para, workspace_template):
                 Body=stream_body,
                 Key=s3_key
             )
-            os.remove(s3_key)
+            os.remove(s3_key) #delete artifact from workspace
             return s3_key
         else:
             print('Zip doesnt exist')
     else:
         print('Not there')
 
- 
+
+#update parameter
+def update_para(para_name, para, key):
+    ssm_client=boto3.client('ssm', region_name=para['aws_region'])
+    new_para=para.update({'s3_key': key})
+    response = client.put_parameter(
+        Name=para_name,
+        Value=new_para,
+        Type='String',
+        Overwrite=True,
+        Tier='Standard'
+    )
+
+
 #main function
 if __name__ == "__main__":
     para_name='django-helloworld'    
     workspace_template='/home/ec2-user/workspace/<pipeline_name>'
     #calls
     fetched_paras=fetch_parameter(para_name)
-    item_resp=put_s3(fetched_paras, workspace_template)
-    print(item_resp)
+    s3_key=put_s3(fetched_paras, workspace_template)
+    print(s3_key)
+    update_para(para_name, fetched_paras, s3_key)
     
