@@ -34,8 +34,8 @@ def put_s3(para, workspace_template):
         filepaths=[]
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
             for filename in files:
-                filePath = os.path.join(root, filename)
-                filePaths.append(filePath)
+                filepath = os.path.join(root, filename)
+                filepaths.append(filepath)
         print(filepaths)
     else:
         print("Not there")
