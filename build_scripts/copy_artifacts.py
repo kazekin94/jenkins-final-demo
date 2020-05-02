@@ -35,7 +35,9 @@ def put_s3(para, workspace_template):
             for filename in files:
                 filepath = os.path.join(root, filename)
                 filepaths.append(filepath)
+        filepaths=filepaths.append(workspace_path+'/appspec.yml')
         print('Filepaths in buildscripts directory:', filepaths)
+        
     else:
         print('Not there')
 
