@@ -38,13 +38,16 @@ def put_s3(para, workspace_template):
                 filepaths.append(filepath)
         appspec_path=workspace_path+'/appspec.yml'
         print(appspec_path)
-        filepaths.append(appspec_path)
-        print('Filepaths in buildscripts directory:', filepaths)
+        filepaths.append(appspec_path) #files to append
         zip_file=zipfile.ZipFile(zip_filename, 'w')
         with zip_file:
             for file in filepaths:
-                print(file.split('/home/ec2-user/workspace/python-pipeline/')[1])
+                print('Zipping:', file.split('/home/ec2-user/workspace/python-pipeline/')[1])
                 zip_file.write(file, file.split('/home/ec2-user/workspace/python-pipeline/')[1], compress_type=zipfile.ZIP_DEFLATED)
+        if os.path.exists(workspace_path+'/'+zip_filename):
+            print("Zip exists")
+        else:
+            print('Zip doesnt exist')
     else:
         print('Not there')
 
