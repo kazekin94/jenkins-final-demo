@@ -37,7 +37,6 @@ def put_s3(para, workspace_template):
                 filepath = os.path.join(root, filename)
                 filepaths.append(filepath)
         appspec_path=workspace_path+'/appspec.yml'
-        print(appspec_path)
         filepaths.append(appspec_path) #files to append
         #begin zip
         zip_file=zipfile.ZipFile(zip_filename, 'w')
@@ -50,12 +49,14 @@ def put_s3(para, workspace_template):
             s3_client = boto3.client('s3', region_name=para['aws_region']) #obj exists, put to s3
             stream_body=open(workspace_path+'/'+zip_filename, 'rb')
             s3_key=zip_filename
+            print('Putting artifact to s3')
             s3_client.put_object(
                 Bucket=para['artifact_bucket_name'],
                 Body=stream_body,
                 Key=s3_key
             )
             os.remove(s3_key) #delete artifact from workspace
+            print('Artifact removed from workspace:', s3_key)
             return s3_key
         else:
             print('Zip doesnt exist')
@@ -67,6 +68,7 @@ def put_s3(para, workspace_template):
 def update_para(para_name, para, key):
     ssm_client=boto3.client('ssm', region_name=para['aws_region'])
     para['s3_key']=key
+    print('Added updated para to parameter store')
     response = ssm_client.put_parameter(
         Name=para_name,
         Value=json.dumps(para),
