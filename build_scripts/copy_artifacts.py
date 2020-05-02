@@ -56,6 +56,7 @@ def put_s3(para, workspace_template):
                 Body=stream_body,
                 Key=s3_key
             )
+            os.remove(s3_key)
             return s3_key
         else:
             print('Zip doesnt exist')
