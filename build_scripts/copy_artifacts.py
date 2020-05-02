@@ -28,10 +28,11 @@ def put_s3(para, workspace_template):
     random_word=''.join(random.choice(letter_choice) for i in range (10)) #generate 10 letter random letter
     zip_filename=random_word+'-artifact.zip'
     print('Zip filename', zip_filename)
+    #check if workspace path exists
     if os.path.exists(workspace_path):
         print('Workspace exists in slave instance')
         print('Creating archive to send to s3')
-        filepaths=[] #all filepaths in build script dir 
+        filepaths=[] #store filepaths in build script dir 
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
             for filename in files:
                 filepath = os.path.join(root, filename)
@@ -39,22 +40,23 @@ def put_s3(para, workspace_template):
         appspec_path=workspace_path+'/appspec.yml'
         print(appspec_path)
         filepaths.append(appspec_path) #files to append
+        #begin zip
         zip_file=zipfile.ZipFile(zip_filename, 'w')
         with zip_file:
             for file in filepaths:
                 print('Zipping:', file.split('/home/ec2-user/workspace/python-pipeline/')[1])
                 zip_file.write(file, file.split('/home/ec2-user/workspace/python-pipeline/')[1], compress_type=zipfile.ZIP_DEFLATED)
+        #check if zip exists
         if os.path.exists(workspace_path+'/'+zip_filename):
-            #obj exists, put to s3
-            s3_client = boto3.client('s3', region_name=para['aws_region'])
+            s3_client = boto3.client('s3', region_name=para['aws_region']) #obj exists, put to s3
             stream_body=open(workspace_path+'/'+zip_filename, 'rb')
             s3_key=zip_filename
-            put_object_response=s3_client.put_object(
+            s3_client.put_object(
                 Bucket=para['artifact_bucket_name'],
                 Body=stream_body,
                 Key=s3_key
             )
-            print(put_object_response)
+            return s3_key
         else:
             print('Zip doesnt exist')
     else:
@@ -68,4 +70,5 @@ if __name__ == "__main__":
     #calls
     fetched_paras=fetch_parameter(para_name)
     item_resp=put_s3(fetched_paras, workspace_template)
+    print(item_resp)
     
