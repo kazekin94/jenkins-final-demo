@@ -36,12 +36,14 @@ def put_s3(para, workspace_template):
             for filename in files:
                 filepath = os.path.join(root, filename)
                 filepaths.append(filepath)
-        #filepaths=filepaths.append(workspace_path+'/appspec.yml')
         appspec_path=workspace_path+'/appspec.yml'
         print(appspec_path)
         filepaths.append(appspec_path)
         print('Filepaths in buildscripts directory:', filepaths)
-        
+        zip_file=zipfile.ZipFile(zip_filename, 'w')
+        with zip_file:
+            for file in filepaths:
+                zip_file.write(file)
     else:
         print('Not there')
 
