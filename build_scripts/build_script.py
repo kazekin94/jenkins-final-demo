@@ -57,6 +57,7 @@ def push_image(client, image_obj):
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
         push_resp=client.images.push(image_name, auth_config=auth_config) #push image
         #print('Push response:', push_resp)
+        print('Image pushed to ecr')
         return 'Image pushed to ECR'
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
