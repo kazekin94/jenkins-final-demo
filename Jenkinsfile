@@ -8,5 +8,11 @@ pipeline {
 				sh "sudo python3 ${WORKSPACE}/build_scripts/build_script.py"
             }
         }
+        stage('Copy Artifacts') {
+            steps {
+                sh 'chmod 777 ${WORKSPACE}/build_scripts/copy_artifacts.py'
+			    sh "sudo python3 ${WORKSPACE}/build_scripts/copy_artifacts.py"
+            }
+        }
     }
 }
