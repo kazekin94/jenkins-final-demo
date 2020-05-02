@@ -45,7 +45,15 @@ def put_s3(para, workspace_template):
                 print('Zipping:', file.split('/home/ec2-user/workspace/python-pipeline/')[1])
                 zip_file.write(file, file.split('/home/ec2-user/workspace/python-pipeline/')[1], compress_type=zipfile.ZIP_DEFLATED)
         if os.path.exists(workspace_path+'/'+zip_filename):
-            print("Zip exists")
+            #obj exists, put to s3
+            s3_client = boto3.client('s3', region_name=para['aws_region'])
+            stream_body=open(workspace_path+'/'+zip_filename, 'rb')
+            s3_key=zip_filename
+            put_object_response=s3_client.put_object(
+                Bucket=para['artifact_bucket_name'],
+                Body=stream_body
+            )
+            print(put_object_response)
         else:
             print('Zip doesnt exist')
     else:
