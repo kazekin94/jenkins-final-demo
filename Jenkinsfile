@@ -14,11 +14,6 @@ pipeline {
 			    sh "sudo python3 ${WORKSPACE}/build_scripts/copy_artifacts.py"
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'chmod 777 ${WORKSPACE}/build_scripts/deploy_lift_shift.py'
-			    sh "sudo python3 ${WORKSPACE}/build_scripts/deploy_lift_shift.py"
-            }
-        }
+        
     }
 }
