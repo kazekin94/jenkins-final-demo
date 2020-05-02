@@ -66,13 +66,11 @@ def put_s3(para, workspace_template):
 #update parameter
 def update_para(para_name, para, key):
     ssm_client=boto3.client('ssm', region_name=para['aws_region'])
-    print(para)
-    print(type(para))
-    new_para=para.update({'s3_key': key})
-    print(new_para)
+    para['s3_key']=key
+    print('New para:', para)
     response = ssm_client.put_parameter(
         Name=para_name,
-        Value=new_para,
+        Value=para,
         Type='String',
         Overwrite=True,
         Tier='Standard'
