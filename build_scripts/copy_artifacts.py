@@ -51,7 +51,8 @@ def put_s3(para, workspace_template):
             s3_key=zip_filename
             put_object_response=s3_client.put_object(
                 Bucket=para['artifact_bucket_name'],
-                Body=stream_body
+                Body=stream_body,
+                Key=s3_key
             )
             print(put_object_response)
         else:
