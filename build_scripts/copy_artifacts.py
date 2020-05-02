@@ -33,7 +33,7 @@ def put_s3(para, workspace_template):
         print("Creating archive to send to s3")
         filepaths=[]
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
-            for filenames in files:
+            for filename in files:
                 filePath = os.path.join(root, filename)
                 filePaths.append(filePath)
         print(filepaths)
