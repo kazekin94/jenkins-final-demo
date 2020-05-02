@@ -31,7 +31,7 @@ def put_s3(para, workspace_template):
     if os.path.exists(workspace_path):
         print("Workspace exists in slave instance")
         print("Creating archive to send to s3")
-        filepaths=[]
+        filepaths=[] #all filepaths in build script dir 
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
             for filename in files:
                 filepath = os.path.join(root, filename)

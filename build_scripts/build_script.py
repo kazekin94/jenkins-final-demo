@@ -33,11 +33,11 @@ def build_image(client, para, path_workspace):
     image_name=repo_name+':'+para['image_tag']
     print(image_name)
     #build image
-    print("Image build started")
+    print('Image build started')
     try:
         image_build_response=client.images.build(path=docker_file_path, tag=image_name, dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
         #print("Successful image built return object:", image_build_response)
-        print("Image built")
+        print('Image built')
         return image_build_response
     except Exception as e:
         print('Exception in building image:', e)
@@ -57,6 +57,7 @@ def push_image(client, image_obj):
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
         push_resp=client.images.push(image_name, auth_config=auth_config) #push image
         print('Push response:', push_resp)
+        return 'Image pushed to ECR'
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
 
