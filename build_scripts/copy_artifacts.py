@@ -23,17 +23,20 @@ def fetch_parameter(para):
 
 #zip files to make an archive
 def put_s3(para, workspace_template):
-    workspace_path=workspace_template.replace('<pipeline_name>', para['pipeline_name'])
+    workspace_path=workspace_template.replace('<pipeline_name>', para['pipeline_name']) #workspace path
     letter_choice=string.ascii_lowercase+string.ascii_uppercase #set random letters
     random_word=''.join(random.choice(letter_choice) for i in range (10)) #generate 10 letter random letter
     zip_filename=random_word+'-artifact.zip'
     print("Zip filename", zip_filename)
     if os.path.exists(workspace_path):
         print("Workspace exists in slave instance")
-        zipfile_obj=zipfile.ZipFile(zip_filename, 'w')
-        zipfile_obj.write(workspace_path+'/build_scripts', 'build_scripts', compress_type=zipfile.ZIP_DEFLATED)
-        zipfile_obj.write(workspace_path+'/appspec.yml', 'appspec.yml', compress_type=zipfile.ZIP_DEFLATED)
-        zipfile_obj.close()
+        print("Creating archive to send to s3")
+        filepaths=[]
+        for root, directories, files in os.walk(workspace_path+'/build_scripts'):
+            for filenames in files:
+                filePath = os.path.join(root, filename)
+                filePaths.append(filePath)
+        print(filepaths)
     else:
         print("Not there")
 
