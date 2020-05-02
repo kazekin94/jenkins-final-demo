@@ -30,7 +30,7 @@ def put_s3(para, workspace_template):
     #check if workspace path exists
     if os.path.exists(workspace_path):
         print('Workspace exists in slave instance')
-        print('Creating archive to send to s3')
+        print('Creating archive to upload to s3')
         filepaths=[] #store filepaths in build script dir 
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
             for filename in files:
@@ -68,7 +68,7 @@ def put_s3(para, workspace_template):
 def update_para(para_name, para, key):
     ssm_client=boto3.client('ssm', region_name=para['aws_region'])
     para['s3_key']=key
-    print('Added updated para to parameter store')
+    print('Adding updated para to parameter store:', para)
     response = ssm_client.put_parameter(
         Name=para_name,
         Value=json.dumps(para),
@@ -85,6 +85,5 @@ if __name__ == "__main__":
     #calls
     fetched_paras=fetch_parameter(para_name)
     s3_key=put_s3(fetched_paras, workspace_template)
-    print(s3_key)
     update_para(para_name, fetched_paras, s3_key)
     

@@ -31,12 +31,11 @@ def build_image(client, para, path_workspace):
     repo_name_template=para['image_repo_name']
     repo_name=repo_name_template.replace('<aws_account_id>', para['aws_account_id']).replace('<aws_region>', para['aws_region'])+'/'+para['image_name']
     image_name=repo_name+':'+para['image_tag']
-    print(image_name)
+    print('Image name:', image_name)
     #build image
     print('Image build started')
     try:
         image_build_response=client.images.build(path=docker_file_path, tag=image_name, dockerfile='Dockerfile') #returns image class obj, generator of json decoded logs
-        #print("Successful image built return object:", image_build_response)
         print('Image built')
         return image_build_response
     except Exception as e:
