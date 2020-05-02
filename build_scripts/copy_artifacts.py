@@ -17,7 +17,6 @@ def fetch_parameter(para):
     )
     para_value=response['Parameter']['Value']
     para_value_dict=json.loads(para_value)
-    print("Parameters fetched:", para_value_dict)
     return para_value_dict
 
 
@@ -27,18 +26,18 @@ def put_s3(para, workspace_template):
     letter_choice=string.ascii_lowercase+string.ascii_uppercase #set random letters
     random_word=''.join(random.choice(letter_choice) for i in range (10)) #generate 10 letter random letter
     zip_filename=random_word+'-artifact.zip'
-    print("Zip filename", zip_filename)
+    print('Zip filename', zip_filename)
     if os.path.exists(workspace_path):
-        print("Workspace exists in slave instance")
-        print("Creating archive to send to s3")
+        print('Workspace exists in slave instance')
+        print('Creating archive to send to s3')
         filepaths=[] #all filepaths in build script dir 
         for root, directories, files in os.walk(workspace_path+'/build_scripts'):
             for filename in files:
                 filepath = os.path.join(root, filename)
                 filepaths.append(filepath)
-        print(filepaths)
+        print('Filepaths in buildscripts directory:', filepaths)
     else:
-        print("Not there")
+        print('Not there')
 
  
 #main function

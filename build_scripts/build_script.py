@@ -56,7 +56,7 @@ def push_image(client, image_obj):
         print('Login succeded:', login_resp)
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
         push_resp=client.images.push(image_name, auth_config=auth_config) #push image
-        print('Push response:', push_resp)
+        #print('Push response:', push_resp)
         return 'Image pushed to ECR'
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
@@ -71,4 +71,4 @@ if __name__ == "__main__":
     #calls 
     fetched_paras=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetched_paras, work_space_path) #build image
-    ecr_push_image=push_image(docker_client, image_object) 
+    ecr_push_image=push_image(docker_client, image_object)  #push image
