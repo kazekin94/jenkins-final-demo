@@ -1,15 +1,16 @@
 #!/usr/bin/python3
+import shutil
 import os
 
 #clean workspace
 def cleanup(path):
     try:
         if os.path.exists(path):
-            os.rmdir(path)
+            shutil.rmtree(path)
         else:
             print('First deployment')
     except OSError as e:
-        print("Error: %s : %s" % (dir_path, e.strerror))
+        print("Error: %s : %s" % (path, e.strerror))
 
 
 if __name__ == "__main__":
