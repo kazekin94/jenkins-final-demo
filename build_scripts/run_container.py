@@ -33,7 +33,7 @@ def run_container(client, paras):
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
         image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
         print('Image used to run container:', image_name)
-        client.containers.run(image_name, detach=True, ports={'8000/tcp': 8000, name=paras['container_name']}) #push image
+        client.containers.run(image_name, detach=True, ports={'8000/tcp': 8000}, name=paras['container_name']) #run container
         print('{} container started'.format(paras['container_name']))
     except Exception as e:
         print('Exception in loggin in:', e)
