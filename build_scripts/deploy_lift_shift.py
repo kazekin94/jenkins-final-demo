@@ -97,11 +97,11 @@ def get_deployment_group(paras):
 
 
 #create deployment
-def create_deployment(paras, dg_id):
+def create_deployment(paras):
     client=boto3.client('codedeploy', region_name=paras['aws_region'])
     response=client.create_deployment(
         applicationName=paras['deployment_app_lift_shift'],
-        deploymentGroupName=dg_id,
+        deploymentGroupName=paras['dg_lift_shift'],
         revision={
             'revisionType': 'S3',
             's3Location': {
@@ -124,4 +124,4 @@ if __name__ == "__main__":
     fetched_paras=fetch_parameter(para_name) #fetch para
     app_name=create_deployment_app(fetched_paras) #create/fetch deployment application
     dg_id=list_deployment_groups(fetched_paras, app_name)
-    deployment_id=create_deployment(fetched_paras, dg_id)
+    deployment_id=create_deployment(fetched_paras)
