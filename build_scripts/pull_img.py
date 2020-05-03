@@ -22,13 +22,21 @@ def fetch_parameter(para):
 
 #pull image from ecr
 def pull_image_ecr(client, paras):
+    ecr_client=boto3.client('ecr', region_name='ap-south-1')
     try:
-        login_resp=client.login(paras['ecr_temp_auth']['username'], paras['ecr_temp_auth']['password'], registry=paras['ecr_temp_auth']['registry']) #login to repo
+        auth_resp=ecr_client.get_authorization_token()
+        user, passwd=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode().split(':')
+        registry=auth_resp['authorizationData'][0]['proxyEndpoint']
+        login_resp=client.login(user, passwd, registry=registry) #login to repo
         print('Login succeded:', login_resp)
-        
-        auth_config={'username': paras['ecr_temp_auth']['username'], 'password': paras['ecr_temp_auth']['password']}
-        pull_respone=client.images.pull(paras['image_tag'], auth_config=auth_config)
-        
+        auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
+        image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
+        print(image_name)
+        push_resp=client.images.pull(image_name, auth_config=auth_config) #push image
+        #print('Push response:', push_resp)
+        print('Image pushed to ecr')
+        auth_config['registry']=registry
+        return auth_config
     except Exception as e:
         print('Exception in loggin in:', e)
 

@@ -45,6 +45,7 @@ def build_image(client, para, path_workspace):
 def push_image(client, image_obj):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
     image_name=image_obj[0].tags[0]
+    print(image_name)
     try:
         #ecr authorization
         auth_resp=ecr_client.get_authorization_token()
@@ -66,7 +67,6 @@ def push_image(client, image_obj):
 def update_para(para_name, para, ecr_auth):
     ssm_client=boto3.client('ssm', region_name=para['aws_region'])
     para['ecr_temp_auth']=ecr_auth
-    print('Adding updated para to parameter store:', para)
     response = ssm_client.put_parameter(
         Name=para_name,
         Value=json.dumps(para),
