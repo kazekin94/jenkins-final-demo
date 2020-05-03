@@ -25,11 +25,10 @@ def pull_image_ecr(client, paras):
     try:
         login_resp=client.login(paras['ecr_temp_auth']['username'], paras['ecr_temp_auth']['password'], registry=paras['ecr_temp_auth']['registry']) #login to repo
         print('Login succeded:', login_resp)
-        try:
-            auth_config={'username': paras['ecr_temp_auth']['username'], 'password': paras['ecr_temp_auth']['password']}
-            pull_respone=client.images.pull(paras['image_tag'], auth_config=auth_config)
-        except Exception as e:
-            print('Error in oulling image:', e)
+        
+        auth_config={'username': paras['ecr_temp_auth']['username'], 'password': paras['ecr_temp_auth']['password']}
+        pull_respone=client.images.pull(paras['image_tag'], auth_config=auth_config)
+        
     except Exception as e:
         print('Exception in loggin in:', e)
 
