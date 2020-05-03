@@ -19,7 +19,7 @@ hooks:
   AfterInstall: 
     - location: build_scripts/pull_img.py
       timeout: 300
-    - location: build_scripts/run_cont.sh
+    - location: build_scripts/run_container.py
       timeout: 300
 
 
