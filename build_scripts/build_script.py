@@ -56,9 +56,23 @@ def push_image(client, image_obj):
         push_resp=client.images.push(image_name, auth_config=auth_config) #push image
         #print('Push response:', push_resp)
         print('Image pushed to ecr')
-        return 'Image pushed to ECR'
+        return auth_config
     except Exception as e:
         print("Exception raised in pushing image to ecr:", e)
+
+
+#update parameter
+def update_para(para_name, para, ecr_auth):
+    ssm_client=boto3.client('ssm', region_name=para['aws_region'])
+    para['ecr_temp_auth']=ecr_auth
+    print('Adding updated para to parameter store:', para)
+    response = ssm_client.put_parameter(
+        Name=para_name,
+        Value=json.dumps(para),
+        Type='String',
+        Overwrite=True,
+        Tier='Standard'
+    )
 
     
 if __name__ == "__main__":
@@ -70,4 +84,5 @@ if __name__ == "__main__":
     #calls 
     fetched_paras=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetched_paras, work_space_path) #build image
-    ecr_push_image=push_image(docker_client, image_object)  #push image
+    ecr_auth=push_image(docker_client, image_object)  #push image
+    update_para(para_name, fetched_paras, ecr_auth)
