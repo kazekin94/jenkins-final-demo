@@ -15,7 +15,7 @@ def fetch_parameter(para):
     )
     para_value=response['Parameter']['Value']
     para_value_dict=json.loads(para_value)
-    print("Parameters fetched:", para_value_dict)
+    print('Parameters fetched')
     return para_value_dict
 
 

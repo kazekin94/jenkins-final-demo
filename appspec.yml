@@ -11,7 +11,7 @@ permissions:
 
 hooks:
   ApplicationStop:
-    - location: build_scripts/build_script.py
+    - location: build_scripts/stop_app.py
       timeout: 300
   BeforeInstall:
     - location: build_scripts/cleanup.sh
