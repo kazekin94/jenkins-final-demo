@@ -20,13 +20,15 @@ def fetch_parameter(para):
     return para_value_dict
 
 
-#
+#pull image from ecr
 def pull_image_ecr(client, paras):
     try:
         login_resp=client.login(paras['ecr_temp_auth']['username'], paras['ecr_temp_auth']['password'], registry=paras['ecr_temp_auth']['registry']) #login to repo
         print('Login succeded:', login_resp)
         try:
             pull_respone=client.images.pull(paras['image_tag'])
+        except Exception as e:
+            print('Error in oulling image:', e)
     except Exception as e:
         print('Exception in loggin in:', e)
 
