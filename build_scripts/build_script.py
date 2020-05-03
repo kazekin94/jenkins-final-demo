@@ -2,7 +2,6 @@ import boto3
 import json
 import docker
 import os
-from io import BytesIO
 import base64
 
 
