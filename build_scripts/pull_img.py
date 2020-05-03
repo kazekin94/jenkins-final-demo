@@ -3,6 +3,7 @@ import boto3
 import json
 import docker
 import os
+import base64
 
 
 #fetch parameters from ssm
