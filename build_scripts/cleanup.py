@@ -4,7 +4,10 @@ import os
 #clean workspace
 def cleanup(path):
     try:
-        os.rmdir(path)
+        if os.path.exists(path):
+            os.rmdir(path)
+        else:
+            print('First deployment')
     except OSError as e:
         print("Error: %s : %s" % (dir_path, e.strerror))
 
