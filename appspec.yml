@@ -14,7 +14,7 @@ hooks:
     - location: build_scripts/stop_app.py
       timeout: 300
   BeforeInstall:
-    - location: build_scripts/cleanup.sh
+    - location: build_scripts/cleanup.py
       timeout: 300
   AfterInstall: 
     - location: build_scripts/pull_img.sh
