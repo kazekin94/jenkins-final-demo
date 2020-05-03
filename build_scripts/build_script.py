@@ -63,6 +63,7 @@ def push_image(client, image_obj):
         print("Exception raised in pushing image to ecr:", e)
 
 
+'''
 #update parameter
 def update_para(para_name, para, ecr_auth):
     ssm_client=boto3.client('ssm', region_name=para['aws_region'])
@@ -74,6 +75,7 @@ def update_para(para_name, para, ecr_auth):
         Overwrite=True,
         Tier='Standard'
     )
+'''
 
     
 if __name__ == "__main__":
@@ -86,4 +88,4 @@ if __name__ == "__main__":
     fetched_paras=fetch_parameter(para_name) #fetch para
     image_object=build_image(docker_client, fetched_paras, work_space_path) #build image
     ecr_auth=push_image(docker_client, image_object)  #push image
-    update_para(para_name, fetched_paras, ecr_auth)
+    #update_para(para_name, fetched_paras, ecr_auth)

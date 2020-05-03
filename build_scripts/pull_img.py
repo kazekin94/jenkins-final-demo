@@ -32,12 +32,9 @@ def pull_image_ecr(client, paras):
         print('Login succeded:', login_resp)
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
         image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
-        print(image_name)
-        push_resp=client.images.pull(image_name, auth_config=auth_config) #push image
-        #print('Push response:', push_resp)
-        print('Image pushed to ecr')
-        auth_config['registry']=registry
-        return auth_config
+        print('Image to be pulled:', image_name)
+        client.images.pull(image_name, auth_config=auth_config) #push image
+        print('Image pulled from ecr')
     except Exception as e:
         print('Exception in loggin in:', e)
 
@@ -50,4 +47,4 @@ if __name__ == "__main__":
     docker_client=docker.from_env()
     #calls 
     fetched_paras=fetch_parameter(para_name) #fetch para
-    pull_resp=pull_image_ecr(docker_client, fetched_paras)
+    pull_image_ecr(docker_client, fetched_paras)
