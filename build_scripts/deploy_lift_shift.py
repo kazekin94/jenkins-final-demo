@@ -2,6 +2,7 @@ import boto3
 import json
 import docker
 import os
+import time
 
 
 #fetch parameters from ssm
@@ -111,7 +112,17 @@ def create_deployment(paras):
             }
         }
     )
-    print(response)
+    deployment_status=describe_deployment(response['deploymentId'], client) #describe deployment
+    print('Current deployment status is {}'.format(deployment_status))
+
+
+#describe deployments
+def describe_deployment(id, client):
+    try:
+        response=client.get_deployment(
+            deploymentId=id
+        )
+        return response['deploymentInfo']['status']
 
 
 if __name__ == "__main__":
