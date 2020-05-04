@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+import boto3
 import json
 import docker
-import boto3
+import os
+import base64
 
 
 #fetch parameters from ssm
@@ -19,15 +21,39 @@ def fetch_parameter(para):
     return para_value_dict
 
 
-#stop containers
-def stop_containers(para_name):
-    print("stopping")
+#stop container
+def stop_container(client, paras):
+    try:
+        client.stop(paras['container_name'])
+    except Exception as e:
+        print('Exception in loggin in:', e)
 
 
-if __name__ == "__main__":
-    para_name='django-helloworld'
-    docker_client=docker.from_env()
-    #calls
-    fetched_paras=fetch_parameter(para_name)
-    stop_resp=stop_containers(fetched_paras)
+#delete container
+def delete_container(client, paras):
+    try:
+        client.remove_container(paras['container_name'])
+    except Exception as e:
+        print('Exception in loggin in:', e)
+
+
+#delete image
+def delete_image(client, paras):
+    image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
+    try:
+        client.remove_image(image_name, force=True)
+    except Exception as e:
+        print('Exception in loggin in:', e)
+
     
+if __name__ == "__main__":
+    #env variables
+    para_name='django-helloworld'
+    work_space_path='/home/ec2-user/workspace/<pipeline_name>'
+    #set docker client
+    docker_client=docker.from_env()
+    client=docker.APIClient(base_url='unix://var/run/docker.sock') #low level api client
+    #calls 
+    fetched_paras=fetch_parameter(para_name) #fetch para
+    stop_container(client, fetched_paras)
+    delete_image(client, fetched_paras)
