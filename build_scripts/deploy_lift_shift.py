@@ -123,6 +123,8 @@ def describe_deployment(id, client):
             deploymentId=id
         )
         return response['deploymentInfo']['status']
+    except Exception as e:
+        print('Unexpected error while getting deployment status:', e)
 
 
 if __name__ == "__main__":
