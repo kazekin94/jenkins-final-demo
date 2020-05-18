@@ -90,9 +90,9 @@ def create_deployment_group(root_para, context):
     client=boto3.client('codedeploy', region_name=root_para['aws_region'])
     try:
         response=client.create_deployment_group(
-            applicationName=root_para['deployment_app_lift_shift'],
-            deploymentGroupName=root_para['dg_lift_shift'],
-            autoScalingGroups=[root_para['asg_lift_shift']],
+            applicationName=context['deployment_app_lift_shift'],
+            deploymentGroupName=context['dg_lift_shift'],
+            autoScalingGroups=[context['asg_lift_shift']],
             serviceRoleArn=root_para['code_deploy_service_role'],
             deploymentStyle={'deploymentType': 'IN_PLACE', 'deploymentOption': 'WITHOUT_TRAFFIC_CONTROL'}
         )
