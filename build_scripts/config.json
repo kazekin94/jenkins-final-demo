@@ -13,5 +13,5 @@
 	"pipeline_name": "python-pipeline",
 	"code_deploy_service_role": "arn:aws:iam::614083026494:role/TicketingCodedeployToDev",
 	"s3_key": "ujtOkkdzkp-artifact.zip",
-	"deployment_type": "lift_shift"		
+	"deployment_type": "cloud_native"		
 }
