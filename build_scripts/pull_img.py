@@ -30,8 +30,9 @@ def fetch_parameter(para):
 #pull image from ecr
 def pull_image_ecr(client, root_para, deployment_para):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
+    root_para_image_name=root_para['image_name']
     current_context={}
-    [current_context.update(context) for context in deployment_para if context['image_name']==image_name]
+    [current_context.update(context) for context in deployment_para if context['image_name']==root_para_image_name]
     image_name_template=root_para['image_repo_name'].replace("<aws_account_id>", root_para['aws_account_id']).replace("<aws_region>", root_para['aws_region'])+'/'+root_para['image_name']
     try:
         auth_resp=ecr_client.get_authorization_token()
