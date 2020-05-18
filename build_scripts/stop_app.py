@@ -41,8 +41,11 @@ def stop_container(client, root_para, deployment_para):
 
 #delete container
 def delete_container(client, paras):
+    root_para_image_name=root_para['image_name']
+    current_context={}
+    [current_context.update(context) for context in deployment_para if context['image_name']==root_para_image_name]
     try:
-        client.remove_container(paras['container_name'])
+        client.remove_container(current_context['container_name'])
     except Exception as e:
         print('Exception in loggin in:', e)
 
@@ -67,4 +70,5 @@ if __name__ == "__main__":
     #calls 
     root_para, deployment_para=fetch_parameter(para_name) #fetch para
     stop_container(client, root_para, deployment_para) #stop running instance of app
+    delete_container(client, deployment_para)
     delete_image(client, root_para, deployment_para) #delete current app image
