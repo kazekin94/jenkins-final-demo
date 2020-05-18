@@ -126,6 +126,7 @@ def create_deployment(root_para, context):
             }
         }
     )
+    print('deployment response:', response)
     deployment_status=describe_deployment(response['deploymentId'], client) #describe deployment
     print('Current deployment status is {}'.format(deployment_status))
     
