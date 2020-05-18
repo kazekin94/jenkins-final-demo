@@ -30,8 +30,9 @@ def fetch_parameter(para):
 
 #stop container
 def stop_container(client, root_para, deployment_para):
+    root_para_image_name=root_para['image_name']
     current_context={}
-    [current_context.update(context) for context in deployment_para if context['image_name']==image_name]
+    [current_context.update(context) for context in deployment_para if context['image_name']==root_para_image_name]
     try:
         client.stop(current_context['container_name'])
     except Exception as e:
