@@ -16,15 +16,24 @@ def fetch_parameter(para):
         Name=para
     )
     para_value=response['Parameter']['Value']
-    para_value_dict=json.loads(para_value)
-    print('Parameters fetched')
-    return para_value_dict
+    root_para=json.loads(para_value)
+    if root_para['deployment_type'] == 'lift_shift': 
+        deployment_para_name='/'+root_para['image_name']+'/'+root_para['deployment_type']
+        deployment_para_resp=ssm_client.get_parameter(
+            Name=deployment_para_name
+        )
+        return root_para, json.loads(deployment_para_resp['Parameter']['Value'])['lift_shift']
+    elif root_para['deployment_type'] == 'cloud_optimised': 
+        print('redundant')
+        return 'para not found'
 
 
 #stop container
-def stop_container(client, paras):
+def stop_container(client, root_para, deployment_para):
+    current_context={}
+    [current_context.update(context) for context in deployment_para if context['image_name']==image_name]
     try:
-        client.stop(paras['container_name'])
+        client.stop(current_context['container_name'])
     except Exception as e:
         print('Exception in loggin in:', e)
 
@@ -38,8 +47,9 @@ def delete_container(client, paras):
 
 
 #delete image
-def delete_image(client, paras):
-    image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
+def delete_image(client, root_para, deployment_para):
+    image_name_template=root_para['image_repo_name'].replace("<aws_account_id>", root_para['aws_account_id']).replace("<aws_region>", root_para['aws_region'])+'/'+root_para['image_name']
+    image_name=image_name_template+':'+root_para['image_tag']
     try:
         client.remove_image(image_name, force=True)
     except Exception as e:
@@ -54,6 +64,6 @@ if __name__ == "__main__":
     docker_client=docker.from_env()
     client=docker.APIClient(base_url='unix://var/run/docker.sock') #low level api client
     #calls 
-    fetched_paras=fetch_parameter(para_name) #fetch para
-    stop_container(client, fetched_paras)
-    delete_image(client, fetched_paras)
+    root_para, deployment_para=fetch_parameter(para_name) #fetch para
+    stop_container(client, root_para, deployment_para) #stop running instance of app
+    delete_image(client, root_para, deployment_para) #delete current app image

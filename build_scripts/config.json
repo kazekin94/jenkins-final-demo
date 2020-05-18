@@ -11,14 +11,7 @@
 	"image_repo_name": "<aws_account_id>.dkr.ecr.<aws_region>.amazonaws.com",
 	"git_repo_name": "jenkins-final-demo",
 	"pipeline_name": "python-pipeline",
-	"deployment_app_lift_shift": "django-lift-shift",
-	"dg_lift_shift": "django-lift-shift-dg",
-	"asg_lift_shift": "stale-deployment-asg",
 	"code_deploy_service_role": "arn:aws:iam::614083026494:role/TicketingCodedeployToDev",
-	"deployment_app_cloud_optimised": "django-cloud-optimised",
-	"dg_cloud_optimised": "django-cloud-optimised-dg",
-	"deployment_app_could_native": "django-cloud-native",
-	"dg_cloud_native": "django-cloud-native-dg",
-	"s3_key": "BsYuYMdFOT-artifact.zip",
-	"container_name": "helloworld"
+	"s3_key": "ujtOkkdzkp-artifact.zip",
+	"deployment_type": "lift_shift"		
 }

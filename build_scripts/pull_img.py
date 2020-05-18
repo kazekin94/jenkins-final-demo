@@ -16,14 +16,23 @@ def fetch_parameter(para):
         Name=para
     )
     para_value=response['Parameter']['Value']
-    para_value_dict=json.loads(para_value)
-    print('Parameters fetched')
-    return para_value_dict
-
+    root_para=json.loads(para_value)
+    if root_para['deployment_type'] == 'lift_shift': 
+        deployment_para_name='/'+root_para['image_name']+'/'+root_para['deployment_type']
+        deployment_para_resp=ssm_client.get_parameter(
+            Name=deployment_para_name
+        )
+        return root_para, json.loads(deployment_para_resp['Parameter']['Value'])['lift_shift']
+    elif root_para['deployment_type'] == 'cloud_optimised': 
+        print('redundant')
+    
 
 #pull image from ecr
-def pull_image_ecr(client, paras):
+def pull_image_ecr(client, root_para, deployment_para):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
+    current_context={}
+    [current_context.update(context) for context in deployment_para if context['image_name']==image_name]
+    image_name_template=root_para['image_repo_name'].replace("<aws_account_id>", root_para['aws_account_id']).replace("<aws_region>", root_para['aws_region'])+'/'+root_para['image_name']
     try:
         auth_resp=ecr_client.get_authorization_token()
         user, passwd=base64.b64decode(auth_resp['authorizationData'][0]['authorizationToken']).decode().split(':')
@@ -31,7 +40,7 @@ def pull_image_ecr(client, paras):
         login_resp=client.login(user, passwd, registry=registry) #login to repo
         print('Login succeded:', login_resp)
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
-        image_name=paras['ecr_repo_uri']+':'+paras['image_tag']
+        image_name=image_name_template+':'+root_para['image_tag']
         print('Image to be pulled:', image_name)
         client.images.pull(image_name, auth_config=auth_config) #push image
         print('Image pulled from ecr')
@@ -46,5 +55,5 @@ if __name__ == "__main__":
     #set docker client
     docker_client=docker.from_env()
     #calls 
-    fetched_paras=fetch_parameter(para_name) #fetch para
-    pull_image_ecr(docker_client, fetched_paras)
+    root_para, deployment_para=fetch_parameter(para_name) #fetch para
+    pull_image_ecr(docker_client, root_para, deployment_para)

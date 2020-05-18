@@ -44,7 +44,7 @@ def build_image(client, para, path_workspace):
 #push image to ecr
 def push_image(client, image_obj):
     ecr_client=boto3.client('ecr', region_name='ap-south-1')
-    image_name=image_obj[0].tags[0]
+    image_name=image_obj[0].tags[0] #expand image object to get built image tag, tag is object in image object
     print(image_name)
     try:
         #ecr authorization
@@ -54,7 +54,7 @@ def push_image(client, image_obj):
         login_resp=client.login(user, passwd, registry=registry) #login to repo
         print('Login succeded:', login_resp)
         auth_config={'username': user, 'password': passwd} #build creds for pushing image to ecr
-        push_resp=client.images.push(image_name, auth_config=auth_config) #push image
+        push_resp=client.images.push(image_name, auth_config=auth_config) #push image, via docker not ecs
         #print('Push response:', push_resp)
         print('Image pushed to ecr')
         auth_config['registry']=registry
