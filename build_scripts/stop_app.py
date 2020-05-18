@@ -34,7 +34,8 @@ def stop_container(client, root_para, deployment_para):
     current_context={}
     [current_context.update(context) for context in deployment_para if context['image_name']==root_para_image_name]
     try:
-        client.stop(current_context['container_name'])
+        stop_resp=client.stop(current_context['container_name'])
+        print(stop_resp)
     except Exception as e:
         print('Exception in loggin in:', e)
 
@@ -45,7 +46,8 @@ def delete_container(client, root_para, deployment_para):
     current_context={}
     [current_context.update(context) for context in deployment_para if context['image_name']==root_para_image_name]
     try:
-        client.remove_container(current_context['container_name'])
+        remove_cont_response=client.remove_container(current_context['container_name'])
+        print(remove_cont_response)
     except Exception as e:
         print('Exception in loggin in:', e)
 
@@ -55,7 +57,8 @@ def delete_image(client, root_para, deployment_para):
     image_name_template=root_para['image_repo_name'].replace("<aws_account_id>", root_para['aws_account_id']).replace("<aws_region>", root_para['aws_region'])+'/'+root_para['image_name']
     image_name=image_name_template+':'+root_para['image_tag']
     try:
-        client.remove_image(image_name, force=True)
+        del_img_resp=client.remove_image(image_name, force=True)
+        print(del_img_resp)
     except Exception as e:
         print('Exception in loggin in:', e)
 
