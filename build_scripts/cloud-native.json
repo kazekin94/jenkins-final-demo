@@ -2,10 +2,10 @@
 	"cloud_native": [{
 		"deployment_app_cloud_native": "django-cloud-native",
 		"dg_cloud_native": "django-cloud-native-dg",
-		"cluster_name": "django-app-cluster",
+		"cluster_name": "cf-django-app-cluster",
 		"ecs_service_name": "django-helloworld-service",
 		"container_name": "helloworld",
-		"task_definition_name": "django-helloworld",
+		"task_definition_name": "django-jenkins-repo-def-cf",
 		"task_definition_current_version": "",
 		"task_definition_arn": "",
 		"ecs_host_role": "arn:aws:iam::614083026494:role/djangoEcsInstanceRole",
@@ -13,7 +13,7 @@
         "latest_image_uri": "",
         "previous_image_uri": "",
         "ecr_repo_name": "django-helloworld",
-        "target_group_arn": "arn:aws:elasticloadbalancing:ap-south-1:614083026494:targetgroup/EcsDefaultTg/02ceb0d1044a2d67",
+        "target_group_arn": "arn:aws:elasticloadbalancing:ap-south-1:614083026494:targetgroup/EcsDefaultTg/03a64cc505991213",
         "load_balancer_name": "ECS-service-loadbalancer"
 	}]
 }
